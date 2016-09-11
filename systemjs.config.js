@@ -31,7 +31,7 @@
         defaultExtension: 'js'
       },
       'angular2-in-memory-web-api': {
-        main: './index.js',
+        main: './users.js',
         defaultExtension: 'js'
       }
     }
