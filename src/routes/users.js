@@ -5,7 +5,7 @@ var express = require('express');
 var User = require('../models/user');
 var router = express.Router();
 
-router.get("/users", function (req, res) {
+router.get("/", function (req, res) {
     User.find({}, function (err, users) {
         if (err) {
             res.send("404");
@@ -15,7 +15,7 @@ router.get("/users", function (req, res) {
     });
 });
 
-router.post("/users", function (req, res) {
+router.post("/", function (req, res) {
     var usr = {
         name: {
             first_name: "Somi",
