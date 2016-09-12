@@ -1,3 +1,6 @@
+/**
+ * Created by rohit on 12/9/16.
+ */
 import './rxjs-extensions';
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -6,6 +9,7 @@ import { HttpModule }    from '@angular/http';
 // Imports for loading & configuring the in-memory web api
 import { InMemoryWebApiModule } from 'angular2-in-memory-web-api';
 import { InMemoryDataService }  from './in-memory-data.service';
+
 import { AppComponent }         from './app.component';
 import { routing }              from './app.routing';
 import {DashboardComponent} from "./dashboard/dashboard.component";
@@ -33,5 +37,4 @@ import {HeroService} from "./heroes/heroes.service";
     ],
     bootstrap: [ AppComponent ]
 })
-export class AppModule {
-}
+export class AppModule { }

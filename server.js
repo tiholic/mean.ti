@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
 var logger = require('morgan');
-
 var debug = require('debug')('mean.ti:server');
 mongoose.connect("mongodb://localhost/mean-ti");
 var db = mongoose.connection;
+var server;
 console.log("--------- database connection started -------------");
 db.on("error", function(){console.log("**************cannot connect to database****************")});
 db.on("open", function(){
@@ -17,16 +17,14 @@ db.on("open", function(){
 
     // routes import
     var routes = require('./src/routes/users');
-    var index = require('./src/routes/index');
     var app = express();
 
-    // uncomment after placing your favicon in /public
-    //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+    app.use(favicon(path.join(__dirname, 'favicon.ico')));
     app.use(logger('dev'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
-    app.use(express.static(path.join(__dirname, 'public')));
+    app.use(express.static(__dirname));
 
     var methodOverride = require('method-override');    //used to manipulate POST
     app.use(methodOverride(function(req, res){
@@ -37,8 +35,16 @@ db.on("open", function(){
             return method;
         }
     }));
-    app.use("/", index);
-    app.use("/users", routes);
+
+    // Use all API routes here
+    app.use("/api/users", routes);
+
+    // Use all API above this line
+
+    //Common route to return index.html
+    app.use("/*", function(req, res){
+        res.sendFile(__dirname+"/index.html");
+    });
 
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {
@@ -55,7 +61,7 @@ db.on("open", function(){
     if (app.get('env') === 'development') {
         app.use(function(err, req, res, next) {
             res.status(err.status || 500);
-            res.render('error', {
+            res.send({
                 message: err.message,
                 error: err
             });
@@ -72,17 +78,13 @@ db.on("open", function(){
         });
     });
 
-    startServer(app);
-});
-
-function startServer(app){
+    debug("process.env.PORT : "+process.env.PORT);
     port = normalizePort(process.env.PORT || '3000');
-    app.set('port', port);
-    server = app.listen(port);
+    server = http.createServer(app);
     server.listen(port);
     server.on('error', onError);
     server.on('listening', onListening);
-}
+});
 
 /**
  * Normalize a port into a number, string, or false.
@@ -120,8 +122,8 @@ function onError(error) {
 }
 
 function onListening() {
-    var addr = server.address();
-    var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
-    console.log("listening on port : "+port);
+    var address = server.address();
+    var bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + address.port;
+    console.log('App running at ' + bind);
     debug('Listening on ' + bind);
 }
