@@ -1,9 +1,9 @@
 /**
- * Created by rohit on 7/9/16.
+ * Created by rohit on 12/9/16.
  */
 var express = require('express');
 var Handler = require('../handler');
-var model = require('../models/user');
+var model = require('../models/hero');
 var router = express.Router();
 
 var handler = new Handler(model);

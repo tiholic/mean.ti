@@ -16,7 +16,7 @@ db.on("open", function(){
     var http = require('http');
 
     // routes import
-    var routes = require('./src/routes/users');
+    var routes = require('./src/tiroutes');
     var app = express();
 
     app.use(favicon(path.join(__dirname, 'favicon.ico')));
@@ -36,12 +36,9 @@ db.on("open", function(){
         }
     }));
 
-    // Use all API routes here
-    app.use("/api/users", routes);
-
-    // Use all API above this line
-
-    //Common route to return index.html
+    // API routes
+    app.use("/api/", routes);
+    // common route to return index.html
     app.use("/*", function(req, res){
         res.sendFile(__dirname+"/index.html");
     });
@@ -55,7 +52,6 @@ db.on("open", function(){
     });
 
     // error handlers
-
     // development error handler
     // will print stacktrace
     if (app.get('env') === 'development') {
