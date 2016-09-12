@@ -4,5 +4,7 @@
 
 export class Hero {
     id: number;
-    name: string;
+    name: String;
+    strength: String;
+    is_flying: Boolean;
 }

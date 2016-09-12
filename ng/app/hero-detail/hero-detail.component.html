@@ -5,6 +5,14 @@
         <label>name: </label>
         <input [(ngModel)]="hero.name" placeholder="name"/>
     </div>
+    <div>
+        <label>strength: </label>
+        <input [(ngModel)]="hero.strength" placeholder="strength"/>
+    </div>
+    <div>
+        <label>can fly: </label>
+        <input type="checkbox" [(ngModel)]="hero.is_flying"/>
+    </div>
     <button (click)="goBack()">Back</button>
     <button (click)="save()">Save</button>
 </div>

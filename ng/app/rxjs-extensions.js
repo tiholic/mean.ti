@@ -1,3 +1,6 @@
+/**
+ * Created by rohit on 12/9/16.
+ */
 "use strict";
 // Observable class extensions
 require('rxjs/add/observable/of');

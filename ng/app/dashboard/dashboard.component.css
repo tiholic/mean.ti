@@ -1,3 +1,7 @@
+/**
+ * Created by rohit on 7/9/16.
+ */
+
 [class*='col-'] {
     float: left;
 }

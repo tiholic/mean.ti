@@ -1,3 +1,7 @@
+/**
+ * Created by rohit on 7/9/16.
+ */
+
 import {Component, Input, OnInit} from "@angular/core";
 import {ActivatedRoute, Params} from "@angular/router";
 import {Hero} from "../hero";
@@ -10,6 +14,7 @@ import {HeroService} from "../heroes/heroes.service";
 export class HeroDetailComponent implements OnInit{
     @Input()
     hero: Hero;
+    errorMessage: String;
 
     constructor(
         private heroService: HeroService,
@@ -22,7 +27,10 @@ export class HeroDetailComponent implements OnInit{
         this.route.params.forEach((params:Params) => {
             let id = +params['id'];
             this.heroService.getHero(id).
-                then(hero => this.hero = hero);
+                subscribe(
+                    hero => this.hero = hero,
+                    error => this.errorMessage = <any>error
+                );
         });
     }
 

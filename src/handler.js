@@ -7,12 +7,12 @@ var response = require('./responseHandler');
 function handler(model) {
     var self = this;
     self.getList = function(req, res) {
-        model.find({}, function (err, entries) {
+        model.find({}, function (err, data) {
             if (err) {
                 response.send500(res, err);
             }
-            if (entries) {
-                res.send(entries);
+            if (data) {
+                response.sendData(res, data);
             } else {
                 response.send404(res);
             }
@@ -20,12 +20,12 @@ function handler(model) {
     };
 
     self.get = function(req, res) {
-        model.findById(req.params.id, function (err, entry) {
+        model.findById(req.params.id, function (err, data) {
             if (err) {
                 response.send500(res, err);
             }
-            if (entry) {
-                res.send(entry);
+            if (data) {
+                res.send(data);
             } else {
                 response.send404(res);
             }
@@ -33,16 +33,16 @@ function handler(model) {
     };
 
     self.post = function(req, res) {
-        var newEntry = model(req.body);
-        newEntry.save(function (err) {
+        var newData = model(req.body);
+        newData.save(function (err) {
             if (err) {
                 response.send500(res, err);
             } else {
-                model.findById(newEntry._id, function (err, entry) {
+                model.findById(newData._id, function (err, data) {
                     if (err) {
                         response.send404(res);
                     } else {
-                        res.send(entry);
+                        res.send(data);
                     }
                 });
             }
@@ -54,12 +54,12 @@ function handler(model) {
             req.params.id,
             {$set: req.body},
             {new: true},
-            function (err, entry) {
+            function (err, data) {
                 if (err) {
                     response.send500(res, err)
                 }
-                if (entry) {
-                    res.send(entry);
+                if (data) {
+                    res.send(data);
                 } else {
                     response.send404(res);
                 }

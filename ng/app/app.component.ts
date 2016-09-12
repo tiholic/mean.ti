@@ -1,14 +1,11 @@
+/**
+ * Created by rohit on 7/9/16.
+ */
+
 import { Component } from '@angular/core';
 @Component({
     selector: 'my-app',
-    template: `
-    <h1>{{title}}</h1>
-    <nav>
-        <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-        <a routerLink="/heroes" routerLinkActive="active">Heroes</a>
-    </nav>
-    <router-outlet></router-outlet>
-  `,
+    templateUrl: 'ng/app/app.component.html',        //All router links to be added inside this template
     styleUrls: ['ng/app/app.component.css']
 })
 export class AppComponent {

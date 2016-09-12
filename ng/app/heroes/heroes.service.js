@@ -1,3 +1,6 @@
+/**
+ * Created by rohit on 7/9/16.
+ */
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -11,35 +14,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 require('rxjs/add/operator/toPromise');
 var http_1 = require("@angular/http");
+var Observable_1 = require('rxjs/Observable');
 var HeroService = (function () {
     function HeroService(http) {
         this.http = http;
-        this.heroesUrl = 'app/heroes';
+        this.heroesUrl = '/api/heroes';
         this.headers = new http_1.Headers({
             'Content-Type': 'application/json'
         });
     }
     HeroService.prototype.getHeroes = function () {
         return this.http.get(this.heroesUrl)
-            .toPromise()
-            .then(function (response) { return response.json().data; })
+            .map(this.extractData)
             .catch(this.handleError);
     };
-    HeroService.prototype.getHeroSlowly = function () {
-        var _this = this;
-        return new Promise(function (resolve) { return setTimeout(resolve, 500); }).then(function () { return _this.getHeroes(); });
+    HeroService.prototype.extractData = function (res) {
+        var body = res.json();
+        return body.data || {};
     };
-    /*getHero(id:number): Promise<Hero>{
-        return new Promise<Hero>(
-            resolve => setTimeout(resolve, 1000)
-        ).then(
-            () => this.getHeroes()
-                .then(heroes => heroes.find(hero => hero.id === id))
-        )
-    }*/
     HeroService.prototype.getHero = function (id) {
         return this.getHeroes()
-            .then(function (heroes) { return heroes.find(function (hero) { return hero.id === id; }); });
+            .map(function (heroes) { return heroes.find(function (hero) { return hero.id === id; }); })
+            .catch(this.handleError);
     };
     HeroService.prototype.update = function (hero) {
         var url = this.heroesUrl + "/" + hero.id;
@@ -51,8 +47,7 @@ var HeroService = (function () {
     HeroService.prototype.create = function (name) {
         var url = "" + this.heroesUrl;
         return this.http.post(url, JSON.stringify({ name: name }), { headers: this.headers })
-            .toPromise()
-            .then(function (response) { return response.json().data; })
+            .map(this.extractData)
             .catch(this.handleError);
     };
     HeroService.prototype.del = function (id) {
@@ -63,8 +58,11 @@ var HeroService = (function () {
             .catch(this.handleError);
     };
     HeroService.prototype.handleError = function (error) {
-        console.error("An error occurred", error);
-        return Promise.reject(error.message || error);
+        // In a real world app, we might use a remote logging infrastructure
+        // We'd also dig deeper into the error to get a better message
+        var errMsg = (error.message) ? error.message : error.status ? error.status + " - " + error.statusText : 'Server error';
+        console.error(errMsg); // log to console instead
+        return Observable_1.Observable.throw(errMsg);
     };
     HeroService = __decorate([
         core_1.Injectable(), 

@@ -9,5 +9,4 @@ var heroRoutes = require('./routes/heroes');
 router.use("/users", userRoutes);
 router.use("/heroes", heroRoutes);
 
-
 module.exports = router;

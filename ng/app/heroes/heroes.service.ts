@@ -1,41 +1,38 @@
-import {Injectable} from "@angular/core";
+/**
+ * Created by rohit on 7/9/16.
+ */
+
+import { Injectable } from "@angular/core";
 import 'rxjs/add/operator/toPromise';
-import {Headers, Http} from "@angular/http";
-import {Hero} from "../hero";
+import { Headers, Http, Response } from "@angular/http";
+import { Hero } from "../hero";
+import { Observable } from 'rxjs/Observable'
 
 @Injectable()
 export class HeroService {
 
-    private heroesUrl = 'app/heroes';
+    private heroesUrl = '/api/heroes';
     private headers = new Headers({
         'Content-Type': 'application/json'
     });
 
     constructor(private http: Http){ }
 
-    getHeroes(): Promise<Hero[]> {
+    getHeroes(): Observable<Hero[]> {
         return this.http.get(this.heroesUrl)
-                        .toPromise()
-                        .then(response => response.json().data as Hero[])
-                        .catch(this.handleError);
-    }
-    getHeroSlowly(): Promise<Hero[]> {
-        return new Promise<Hero[]>(
-            resolve => setTimeout(resolve, 500)
-        ).then(() => this.getHeroes())
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    /*getHero(id:number): Promise<Hero>{
-        return new Promise<Hero>(
-            resolve => setTimeout(resolve, 1000)
-        ).then(
-            () => this.getHeroes()
-                .then(heroes => heroes.find(hero => hero.id === id))
-        )
-    }*/
-    getHero(id: number): Promise<Hero> {
+    private extractData(res: Response){
+        let body = res.json();
+        return body.data || {};
+    }
+
+    getHero(id: number): Observable<Hero> {
         return this.getHeroes()
-            .then(heroes => heroes.find(hero => hero.id === id));
+            .map(heroes => heroes.find(hero => hero.id === id))
+            .catch(this.handleError);
     }
 
     update(hero:Hero):Promise<Hero>{
@@ -46,11 +43,10 @@ export class HeroService {
             .catch(this.handleError)
     }
 
-    create(name:String):Promise<Hero>{
+    create(name:String):Observable<Hero>{
         const url = `${this.heroesUrl}`;
         return this.http.post(url, JSON.stringify({name:name}), {headers:this.headers})
-            .toPromise()
-            .then( response => response.json().data as Hero )
+            .map(this.extractData)
             .catch(this.handleError)
     }
 
@@ -62,8 +58,11 @@ export class HeroService {
             .catch(this.handleError)
     }
 
-    private handleError(error:any):Promise<any>{
-        console.error("An error occurred", error);
-        return Promise.reject(error.message || error);
+    private handleError (error: any) {
+        // In a real world app, we might use a remote logging infrastructure
+        // We'd also dig deeper into the error to get a better message
+        let errMsg = (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+        console.error(errMsg); // log to console instead
+        return Observable.throw(errMsg);
     }
 }

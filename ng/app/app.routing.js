@@ -1,3 +1,6 @@
+/**
+ * Created by rohit on 7/9/16.
+ */
 "use strict";
 var router_1 = require("@angular/router");
 var heroes_component_1 = require("./heroes/heroes.component");

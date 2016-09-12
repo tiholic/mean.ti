@@ -1,3 +1,6 @@
+/**
+ * Created by rohit on 7/9/16.
+ */
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -16,10 +19,11 @@ var HeroesComponent = (function () {
         this.heroService = heroService;
         this.router = router;
         this.title = 'Tour of Heroes';
+        this.mode = "Observable";
     }
     HeroesComponent.prototype.getHeroes = function () {
         var _this = this;
-        this.heroService.getHeroSlowly().then(function (heroes) { return _this.heroes = heroes; });
+        this.heroService.getHeroes().subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorMessage = error; });
     };
     HeroesComponent.prototype.ngOnInit = function () {
         this.getHeroes();
@@ -35,10 +39,10 @@ var HeroesComponent = (function () {
         name = name.trim();
         if (name) {
             this.heroService.create(name).
-                then(function (hero) {
+                subscribe(function (hero) {
                 _this.heroes.push(hero);
                 _this.selectedHero = null;
-            });
+            }, function (error) { return _this.errorMessage = error; });
         }
     };
     HeroesComponent.prototype.del = function (hero) {

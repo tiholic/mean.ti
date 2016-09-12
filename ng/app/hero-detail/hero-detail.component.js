@@ -1,3 +1,6 @@
+/**
+ * Created by rohit on 7/9/16.
+ */
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -22,7 +25,7 @@ var HeroDetailComponent = (function () {
         this.route.params.forEach(function (params) {
             var id = +params['id'];
             _this.heroService.getHero(id).
-                then(function (hero) { return _this.hero = hero; });
+                subscribe(function (hero) { return _this.hero = hero; }, function (error) { return _this.errorMessage = error; });
         });
     };
     HeroDetailComponent.prototype.goBack = function () {
