@@ -12,7 +12,7 @@
   "license": "MIT",
   "description": "A simple MEAN stack where A refers to Angular2",
   "scripts": {
-    "start": "./node_modules/.bin/nodemon debug server.js",
+    "start": "./node_modules/.bin/nodemon --debug server.js",
     "start:prod": "node server.js"
   },
   "dependencies": {
