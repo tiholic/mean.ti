@@ -1,7 +1,8 @@
 /**
  * Created by rohit on 13/9/16.
  */
-function addConnections(io){
+
+function addConnections(io, app){
     io.on('connection', function(socket){
         console.log("=========================================================================== user connected :)");
         socket.on('disconnect', function(){

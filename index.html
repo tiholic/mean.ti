@@ -11,17 +11,14 @@
     <script src="/node_modules/zone.js/dist/zone.js"></script>
     <script src="/node_modules/reflect-metadata/Reflect.js"></script>
     <script src="/node_modules/systemjs/dist/system.src.js"></script>
-    <!-- 2. Sockets.io -->
-    <script src="node_modules/socket.io-client/socket.io.js"></script>
-    <!-- 3. Configure SystemJS -->
+    <!-- 2. Configure SystemJS -->
     <script src="systemjs.config.js"></script>
     <script>
         System.import('/ng/app').catch(function(err){ console.error(err); });
-        var socket = io();
     </script>
 </head>
     <base href="/">
-<!-- 4. Display the application -->
+<!-- 3. Display the application -->
 <body>
 <my-app>Loading...</my-app>
 </body>

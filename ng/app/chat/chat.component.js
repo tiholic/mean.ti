@@ -12,17 +12,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by rohit on 13/9/16.
  */
 var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
+var io = require("socket.io-client");
 var ChatComponent = (function () {
-    function ChatComponent(router) {
-        this.router = router;
+    function ChatComponent() {
     }
     ChatComponent.prototype.ngOnInit = function () {
-        this.socket = socket;
+        var _this = this;
+        this.socket = io();
         this.messages = ["hello", "world"];
+        this.socket.on('chat message', function (message) { return _this.messages.push(message); });
+    };
+    ChatComponent.prototype.ngOnDestroy = function () {
+        this.socket.disconnect();
     };
     ChatComponent.prototype.send = function (message) {
-        // ChatService.sendMessage(message);
+        this.socket.emit('chat message', message);
     };
     ChatComponent = __decorate([
         core_1.Component({
@@ -30,7 +34,7 @@ var ChatComponent = (function () {
             templateUrl: '/ng/app/chat/chat.component.html',
             styleUrls: ['ng/app/chat/chat.component.css']
         }), 
-        __metadata('design:paramtypes', [router_1.Router])
+        __metadata('design:paramtypes', [])
     ], ChatComponent);
     return ChatComponent;
 }());

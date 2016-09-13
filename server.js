@@ -8,19 +8,20 @@ var bodyParser = require('body-parser');            //parses information from PO
 var express = require('express');
 var http = require('http');
 var socket = require('socket.io');
+var socketUsers = require('socket.io.users');
 var routes = require('./src/tiroutes');
 /*  Imports complete    */
 
 mongoose.connect("mongodb://localhost/mean-ti");
 var db = mongoose.connection;
-var server;
+var server, app;
 console.log("Trying to connect to database");
 db.on("error", function(){console.log("**************cannot connect to database****************")});
 db.on("open", function(){
     console.log("___________________________|\\");
     console.log("db connection established    }");
     console.log("_____________________________}");
-    var app = express();
+    app = express();
     app.use(favicon(path.join(__dirname, 'favicon.ico')));
     app.use(logger('dev'));
     app.use(bodyParser.json());
@@ -129,5 +130,19 @@ function onListening() {
 
 function startWebSocket(){
     var io = socket(server, {});
+
+    socketUsers.Session(app);
+    var rootUsers = socketUsers.Users;
+    io.use(socketUsers.Middleware());
+
+    rootUsers.on('connected',function(user){
+        console.log('User has connected with ID: '+ user.id);
+    });
+    rootUsers.on('connection',function(user){
+        console.log('Socket ID: '+user.socket.id+' is user with ID: '+user.id);
+    });
+    rootUsers.on('disconnected',function(user){
+        console.log('User with ID: '+user.id+'is gone away :(');
+    });
     require('./src/chat/ti.socket.io')(io);
 }
