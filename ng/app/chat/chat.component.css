@@ -43,3 +43,9 @@ body {
 #messages li:nth-child(odd) {
     background: #eee;
 }
+
+#messages li .delivered {
+    float: right;
+    color: #607D8B;
+    font-size: 0.5em;
+}

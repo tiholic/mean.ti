@@ -132,16 +132,16 @@ function startWebSocket(){
     var io = socket(server, {});
 
     socketUsers.Session(app);
-    var rootUsers = socketUsers.Users;
+    var users = socketUsers.Users;
     io.use(socketUsers.Middleware());
 
-    rootUsers.on('connected',function(user){
+    users.on('connected',function(user){
         console.log('User has connected with ID: '+ user.id);
     });
-    rootUsers.on('connection',function(user){
+    users.on('connection',function(user){
         console.log('Socket ID: '+user.socket.id+' is user with ID: '+user.id);
     });
-    rootUsers.on('disconnected',function(user){
+    users.on('disconnected',function(user){
         console.log('User with ID: '+user.id+'is gone away :(');
     });
     require('./src/chat/ti.socket.io')(io);

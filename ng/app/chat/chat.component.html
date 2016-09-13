@@ -1,5 +1,5 @@
 <ul id="messages">
-    <li *ngFor="let msg of messages">{{msg}}</li>
+    <li *ngFor="let msg of messages">{{msg.message}}<span class="delivered" *ngIf="msg.delivered">delivered</span></li>
 </ul>
 <div class="chat">
     <input id="m" autocomplete="off" #message />

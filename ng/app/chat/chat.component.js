@@ -13,20 +13,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var core_1 = require("@angular/core");
 var io = require("socket.io-client");
+var message = (function () {
+    function message() {
+        this.id = new Date().getTime();
+    }
+    return message;
+}());
 var ChatComponent = (function () {
     function ChatComponent() {
     }
     ChatComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.socket = io();
-        this.messages = ["hello", "world"];
-        this.socket.on('chat message', function (message) { return _this.messages.push(message); });
+        this.messages = [
+            { id: new Date().getTime(), message: "Hello!", delivered: true },
+            { id: new Date().getTime(), message: "World!", delivered: false },
+        ];
+        this.socket.on('delivered', function (id) {
+            var message = _this.messages.filter(function (msg) { return msg.id == id; })[0];
+            _this.messages[_this.messages.indexOf(message)].delivered = true;
+        });
+        this.socket.on('chat message', function (msg) { return _this.messages.push(msg); });
+        this.socket.on('new user', function (newSocketId) {
+            _this.messages.push({ id: 0, message: newSocketId, delivered: false });
+            _this.to = newSocketId;
+        });
     };
     ChatComponent.prototype.ngOnDestroy = function () {
         this.socket.disconnect();
     };
     ChatComponent.prototype.send = function (message) {
-        this.socket.emit('chat message', message);
+        var msg = { id: new Date().getTime(), message: message, delivered: false };
+        this.messages.push(msg);
+        msg['to'] = this.to;
+        this.socket.emit('chat message', msg);
     };
     ChatComponent = __decorate([
         core_1.Component({
