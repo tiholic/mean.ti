@@ -21,6 +21,7 @@ var app_routing_1 = require('./app.routing');
 var dashboard_component_1 = require("./dashboard/dashboard.component");
 var hero_detail_component_1 = require("./hero-detail/hero-detail.component");
 var heroes_component_1 = require("./heroes/heroes.component");
+var chat_component_1 = require("./chat/chat.component");
 var hero_search_component_1 = require("./hero-search/hero-search.component");
 var heroes_service_1 = require("./heroes/heroes.service");
 // Imports for loading & configuring the in-memory web api
@@ -43,6 +44,7 @@ var AppModule = (function () {
                 dashboard_component_1.DashboardComponent,
                 hero_detail_component_1.HeroDetailComponent,
                 heroes_component_1.HeroesComponent,
+                chat_component_1.ChatComponent,
                 hero_search_component_1.HeroSearchComponent
             ],
             providers: [

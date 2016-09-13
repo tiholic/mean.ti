@@ -25,15 +25,15 @@ export class HeroesComponent implements OnInit{
         private router: Router
     ) { }
 
+    ngOnInit(): void {
+        this.getHeroes();
+    }
+
     getHeroes(): void {
         this.heroService.getHeroes().subscribe(
             heroes => this.heroes = heroes,
             error => this.errorMessage = <any>error
         );
-    }
-
-    ngOnInit(): void {
-        this.getHeroes();
     }
 
     onSelect(hero:Hero):void{

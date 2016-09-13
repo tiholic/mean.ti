@@ -12,6 +12,7 @@ import { routing }              from './app.routing';
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {HeroDetailComponent} from "./hero-detail/hero-detail.component";
 import {HeroesComponent} from "./heroes/heroes.component";
+import {ChatComponent} from "./chat/chat.component";
 import {HeroSearchComponent} from "./hero-search/hero-search.component";
 import {HeroService} from "./heroes/heroes.service";
 
@@ -33,6 +34,7 @@ import {HeroService} from "./heroes/heroes.service";
         DashboardComponent,
         HeroDetailComponent,
         HeroesComponent,
+        ChatComponent,
         HeroSearchComponent
     ],
     providers: [

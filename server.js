@@ -1,24 +1,26 @@
 var mongoose = require('mongoose');
 var logger = require('morgan');
 var debug = require('debug')('mean.ti:server');
+var path = require('path');
+var favicon = require('serve-favicon');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');            //parses information from POST
+var express = require('express');
+var http = require('http');
+var socket = require('socket.io');
+var routes = require('./src/tiroutes');
+/*  Imports complete    */
+
 mongoose.connect("mongodb://localhost/mean-ti");
 var db = mongoose.connection;
 var server;
-console.log("--------- database connection started -------------");
+console.log("Trying to connect to database");
 db.on("error", function(){console.log("**************cannot connect to database****************")});
 db.on("open", function(){
-    console.log("--------- db connection opened -------------");
-    var path = require('path');
-    var favicon = require('serve-favicon');
-    var cookieParser = require('cookie-parser');
-    var bodyParser = require('body-parser');            //parses information from POST
-    var express = require('express');
-    var http = require('http');
-
-    // routes import
-    var routes = require('./src/tiroutes');
+    console.log("___________________________|\\");
+    console.log("db connection established    }");
+    console.log("_____________________________}");
     var app = express();
-
     app.use(favicon(path.join(__dirname, 'favicon.ico')));
     app.use(logger('dev'));
     app.use(bodyParser.json());
@@ -118,8 +120,14 @@ function onError(error) {
 }
 
 function onListening() {
+    startWebSocket();
     var address = server.address();
     var bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + address.port;
     console.log('App running at ' + bind);
     debug('Listening on ' + bind);
+}
+
+function startWebSocket(){
+    var io = socket(server, {});
+    require('./src/chat/ti.socket.io')(io);
 }

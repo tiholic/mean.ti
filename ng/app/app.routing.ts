@@ -7,6 +7,7 @@ import {ModuleWithProviders} from "@angular/core";
 import {HeroesComponent} from "./heroes/heroes.component";
 import {HeroDetailComponent} from "./hero-detail/hero-detail.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
+import {ChatComponent} from "./chat/chat.component"
 
 const appRoutes : Routes = [
     {
@@ -20,6 +21,10 @@ const appRoutes : Routes = [
     {
         path: 'dashboard',
         component: DashboardComponent
+    },
+    {
+        path: 'chat',
+        component: ChatComponent
     },
     {
         path: '',

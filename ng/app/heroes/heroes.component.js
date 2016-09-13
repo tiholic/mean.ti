@@ -21,12 +21,12 @@ var HeroesComponent = (function () {
         this.title = 'Tour of Heroes';
         this.mode = "Observable";
     }
+    HeroesComponent.prototype.ngOnInit = function () {
+        this.getHeroes();
+    };
     HeroesComponent.prototype.getHeroes = function () {
         var _this = this;
         this.heroService.getHeroes().subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorMessage = error; });
-    };
-    HeroesComponent.prototype.ngOnInit = function () {
-        this.getHeroes();
     };
     HeroesComponent.prototype.onSelect = function (hero) {
         this.selectedHero = hero;
