@@ -28,25 +28,23 @@ var HeroService = (function () {
             .map(this.extractData)
             .catch(this.handleError);
     };
-    HeroService.prototype.extractData = function (res) {
-        var body = res.json();
-        return body.data || {};
-    };
     HeroService.prototype.getHero = function (id) {
         return this.getHeroes()
-            .map(function (heroes) { return heroes.find(function (hero) { return hero.id === id; }); })
+            .map(function (heroes) { return heroes.find(function (hero) { return hero._id === id; }); })
             .catch(this.handleError);
     };
     HeroService.prototype.update = function (hero) {
-        var url = this.heroesUrl + "/" + hero.id;
+        var url = this.heroesUrl + "/" + hero._id;
         return this.http.put(url, JSON.stringify(hero), { headers: this.headers })
             .toPromise()
             .then(function () { return hero; })
             .catch(this.handleError);
     };
-    HeroService.prototype.create = function (name) {
+    HeroService.prototype.create = function (name, strength, is_flying) {
+        var body = JSON.stringify({ name: name, strength: strength, is_flying: is_flying });
         var url = "" + this.heroesUrl;
-        return this.http.post(url, JSON.stringify({ name: name }), { headers: this.headers })
+        var options = new http_1.RequestOptions({ headers: this.headers });
+        return this.http.post(url, body, options)
             .map(this.extractData)
             .catch(this.handleError);
     };
@@ -56,6 +54,10 @@ var HeroService = (function () {
             .toPromise()
             .then(function () { return null; })
             .catch(this.handleError);
+    };
+    HeroService.prototype.extractData = function (res) {
+        var body = res.json();
+        return body.data || {};
     };
     HeroService.prototype.handleError = function (error) {
         // In a real world app, we might use a remote logging infrastructure

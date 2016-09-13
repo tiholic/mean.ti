@@ -32,22 +32,19 @@ var HeroesComponent = (function () {
         this.selectedHero = hero;
     };
     HeroesComponent.prototype.gotoDetail = function () {
-        this.router.navigate(['/heroes', this.selectedHero.id]);
+        this.router.navigate(['/heroes', this.selectedHero._id]);
     };
-    HeroesComponent.prototype.add = function (name) {
+    HeroesComponent.prototype.add = function (name, strength, is_flying) {
         var _this = this;
         name = name.trim();
         if (name) {
-            this.heroService.create(name).
-                subscribe(function (hero) {
-                _this.heroes.push(hero);
-                _this.selectedHero = null;
-            }, function (error) { return _this.errorMessage = error; });
+            this.heroService.create(name, strength, is_flying).
+                subscribe(function (hero) { return _this.heroes.push(hero); }, function (error) { return _this.errorMessage = error; });
         }
     };
     HeroesComponent.prototype.del = function (hero) {
         var _this = this;
-        this.heroService.del(hero.id)
+        this.heroService.del(hero._id)
             .then(function () {
             _this.heroes = _this.heroes.filter(function (h) { return h != hero; });
             if (_this.selectedHero == hero) {

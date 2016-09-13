@@ -23,8 +23,8 @@ var HeroDetailComponent = (function () {
     HeroDetailComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.route.params.forEach(function (params) {
-            var id = +params['id'];
-            _this.heroService.getHero(id).
+            var _id = params['id'];
+            _this.heroService.getHero(_id).
                 subscribe(function (hero) { return _this.hero = hero; }, function (error) { return _this.errorMessage = error; });
         });
     };

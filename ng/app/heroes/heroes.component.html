@@ -1,10 +1,11 @@
 <h2>My Heroes</h2>
 <ul class="heroes">
     <li *ngFor="let hero of heroes" [class.selected]="hero === selectedHero" (click)="onSelect(hero)">
-        <span class="badge">{{hero.id}}</span>
-        <span>{{hero.name}}</span>
-        <button class="delete"
-                (click)="del(hero); $event.stopPropagation()">x</button>
+        <span class="badge">{{hero._id}}</span>
+        <span class="data">{{hero.name}}</span>
+        <span class="data">{{hero.strength}}</span>
+        <div *ngIf="hero.is_flying" class="flying"></div>
+        <button class="delete" (click)="del(hero); $event.stopPropagation()">x</button>
     </li>
 </ul>
 <!--<my-hero-detail [hero]="selectedHero"></my-hero-detail>-->
@@ -15,10 +16,10 @@
     <button (click)="gotoDetail()">View Details</button>
 </div>
 <div>
-    <label>Hero name:</label> <input #heroName />
-    <label>Strength:</label> <input #heroStrength />
-    <label>Can Fly:</label> <input type="checkbox" #canFly />
-    <button (click)="add(heroName.value, heroStrength.value, canFly.value); heroName.value=''; heroStrength.value=''; canFly.value=false">
+    <label>Hero name:</label> <input #name />
+    <label>Strength:</label> <input #strength />
+    <label>Can Fly:</label> <input type="checkbox" #is_flying />
+    <button (click)="add(name.value, strength.value, is_flying.checked); name.value=strength.value='';is_flying.checked=false;">
         Add
     </button>
 </div>

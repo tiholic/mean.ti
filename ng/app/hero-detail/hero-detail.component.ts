@@ -14,7 +14,7 @@ import {HeroService} from "../heroes/heroes.service";
 export class HeroDetailComponent implements OnInit{
     @Input()
     hero: Hero;
-    errorMessage: String;
+    errorMessage: string;
 
     constructor(
         private heroService: HeroService,
@@ -25,8 +25,8 @@ export class HeroDetailComponent implements OnInit{
 
     ngOnInit(): void {
         this.route.params.forEach((params:Params) => {
-            let id = +params['id'];
-            this.heroService.getHero(id).
+            let _id:string = params['id'];
+            this.heroService.getHero(_id).
                 subscribe(
                     hero => this.hero = hero,
                     error => this.errorMessage = <any>error

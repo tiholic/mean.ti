@@ -4,7 +4,7 @@
 
 import { Injectable } from "@angular/core";
 import 'rxjs/add/operator/toPromise';
-import { Headers, Http, Response } from "@angular/http";
+import { Headers, Http, Response, RequestOptions } from "@angular/http";
 import { Hero } from "../hero";
 import { Observable } from 'rxjs/Observable'
 
@@ -24,38 +24,40 @@ export class HeroService {
             .catch(this.handleError);
     }
 
-    private extractData(res: Response){
-        let body = res.json();
-        return body.data || {};
-    }
-
-    getHero(id: number): Observable<Hero> {
+    getHero(id: string): Observable<Hero> {
         return this.getHeroes()
-            .map(heroes => heroes.find(hero => hero.id === id))
+            .map(heroes => heroes.find(hero => hero._id === id))
             .catch(this.handleError);
     }
 
     update(hero:Hero):Promise<Hero>{
-        const url = `${this.heroesUrl}/${hero.id}`;
+        const url = `${this.heroesUrl}/${hero._id}`;
         return this.http.put(url, JSON.stringify(hero), {headers: this.headers})
             .toPromise()
             .then(() => hero)
             .catch(this.handleError)
     }
 
-    create(name:String):Observable<Hero>{
+    create(name: String, strength: String, is_flying: boolean):Observable<Hero>{
+        let body = JSON.stringify({name, strength, is_flying});
         const url = `${this.heroesUrl}`;
-        return this.http.post(url, JSON.stringify({name:name}), {headers:this.headers})
+        let options = new RequestOptions({ headers: this.headers });
+        return this.http.post(url, body, options)
             .map(this.extractData)
             .catch(this.handleError)
     }
 
-    del(id:number):Promise<Hero>{
+    del(id:String):Promise<Hero>{
         let url = `${this.heroesUrl}/${id}`;
         return this.http.delete(url, {headers: this.headers})
             .toPromise()
             .then(() => null)
             .catch(this.handleError)
+    }
+
+    private extractData(res: Response){
+        let body = res.json();
+        return body.data || {};
     }
 
     private handleError (error: any) {

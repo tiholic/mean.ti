@@ -3,8 +3,8 @@
  */
 
 export class Hero {
-    id: number;
-    name: String;
-    strength: String;
-    is_flying: Boolean;
+    _id: string;
+    name: string;
+    strength: string;
+    is_flying: boolean;
 }

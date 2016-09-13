@@ -23,10 +23,10 @@ var DashboardComponent = (function () {
     DashboardComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.heroService.getHeroes().
-            then(function (heroes) { return _this.heroes = heroes.slice(1, 5); });
+            subscribe(function (heroes) { return _this.heroes = heroes.slice(0, 4); }, function (error) { return _this.errorMessage = error; });
     };
     DashboardComponent.prototype.gotoDetail = function (hero) {
-        var link = ['/heroes', hero.id];
+        var link = ['/heroes', hero._id];
         this.router.navigate(link);
     };
     DashboardComponent = __decorate([

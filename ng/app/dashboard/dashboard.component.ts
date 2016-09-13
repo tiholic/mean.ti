@@ -13,6 +13,7 @@ import {HeroService} from "../heroes/heroes.service";
 })
 export class DashboardComponent implements OnInit {
     heroes: Hero[] = [];
+    errorMessage: string;
 
     constructor(
         private heroService: HeroService,
@@ -21,11 +22,14 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit(): void {
         this.heroService.getHeroes().
-            then(heroes => this.heroes = heroes.slice(1,5))
+            subscribe(
+                heroes => this.heroes = heroes.slice(0,4),
+                error => this.errorMessage = error
+            );
     }
 
     gotoDetail( hero:Hero ): void{
-        let link = ['/heroes', hero.id];
+        let link = ['/heroes', hero._id];
         this.router.navigate(link);
     }
 }

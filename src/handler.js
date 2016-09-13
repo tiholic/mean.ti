@@ -7,7 +7,11 @@ var response = require('./responseHandler');
 function handler(model) {
     var self = this;
     self.getList = function(req, res) {
-        model.find({}, function (err, data) {
+        var query = {};
+        for(var column in req.query){
+            query[column] = {$regex:req.query[column], $options:'i'};
+        }
+        model.find(query, function (err, data) {
             if (err) {
                 response.send500(res, err);
             }
@@ -25,7 +29,7 @@ function handler(model) {
                 response.send500(res, err);
             }
             if (data) {
-                res.send(data);
+                response.sendData(res, data);
             } else {
                 response.send404(res);
             }
@@ -42,7 +46,7 @@ function handler(model) {
                     if (err) {
                         response.send404(res);
                     } else {
-                        res.send(data);
+                        response.sendData(res, data);
                     }
                 });
             }
@@ -59,7 +63,7 @@ function handler(model) {
                     response.send500(res, err)
                 }
                 if (data) {
-                    res.send(data);
+                    response.sendData(res, data);
                 } else {
                     response.send404(res);
                 }

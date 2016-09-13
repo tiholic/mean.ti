@@ -17,7 +17,7 @@ export class HeroesComponent implements OnInit{
     title = 'Tour of Heroes';
     selectedHero: Hero;
     heroes: Hero[];
-    errorMessage:String;
+    errorMessage:string;
     mode = "Observable";
 
     constructor(
@@ -41,25 +41,22 @@ export class HeroesComponent implements OnInit{
     }
 
     gotoDetail():void{
-        this.router.navigate(['/heroes', this.selectedHero.id]);
+        this.router.navigate(['/heroes', this.selectedHero._id]);
     }
 
-    add(name: String):void{
+    add(name: string, strength: string, is_flying: boolean):void{
         name = name.trim();
         if(name){
-            this.heroService.create(name).
+            this.heroService.create(name, strength, is_flying).
                 subscribe(
-                    hero => {
-                    this.heroes.push(hero);
-                    this.selectedHero = null;
-                    },
+                    hero => this.heroes.push(hero),
                     error => this.errorMessage = <any>error
             )
         }
     }
 
     del(hero:Hero):void{
-        this.heroService.del(hero.id)
+        this.heroService.del(hero._id)
             .then(() => {
                 this.heroes = this.heroes.filter(h => h!= hero);
                 if (this.selectedHero == hero){
